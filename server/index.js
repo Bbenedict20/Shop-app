@@ -51,16 +51,16 @@ const getDate = () => {
     return today;
 }
 
-app.get('/products', async (req, res) => {
+app.get('/api/products', async (req, res) => {
     const products = await Product.find({});
     res.send(products);
 })
-app.get('/getcart', async (req, res) => {
+app.get('/api/getcart', async (req, res) => {
     const curUser = await User.find({ _id: req.session.user_id });
     res.send(curUser[0].cart);
 })
 
-app.post('/addcookies', parseJSON, async (req, res) => {
+app.post('/api/addcookies', parseJSON, async (req, res) => {
     const newCart = [];
     const curUser = await User.find({ _id: req.session.user_id });
 
@@ -89,7 +89,7 @@ app.post('/addcookies', parseJSON, async (req, res) => {
     const updatedCart = await User.find({ _id: req.session.user_id });
     res.send(updatedCart[0].cart);
 })
-app.post('/additem', parseJSON, async (req, res) => {
+app.post('/api/additem', parseJSON, async (req, res) => {
     if (!req.body.quantity) { req.body.quantity = 1 };
     const item = await User.findOne({ '_id': req.session.user_id, 'cart._id': req.body._id })
     if (item) {
@@ -105,7 +105,7 @@ app.post('/additem', parseJSON, async (req, res) => {
     const curCart = await User.find({ _id: req.session.user_id });
     res.send(curCart[0].cart)
 })
-app.post('/increment', parseJSON, async (req, res) => {
+app.post('/api/increment', parseJSON, async (req, res) => {
     if (req.body.plus) {
         await User.findOneAndUpdate({ '_id': req.session.user_id, 'cart._id': req.body._id },
             {
@@ -120,11 +120,11 @@ app.post('/increment', parseJSON, async (req, res) => {
     const curCart = await User.find({ _id: req.session.user_id });
     res.send(curCart[0].cart)
 })
-app.post('/details', parseJSON, async (req, res) => {
+app.post('/api/details', parseJSON, async (req, res) => {
     const info = await Product.find({ _id: req.body.id })
     res.send(info[0]);
 })
-app.post('/register', parseJSON, async (req, res) => {
+app.post('/api/register', parseJSON, async (req, res) => {
     const { username, password } = req.body;
     const hashed = await bcrypt.hash(password, 12);
     const isMade = await User.find({ username })
@@ -161,7 +161,7 @@ app.post('/register', parseJSON, async (req, res) => {
         res.send('username');
     }
 })
-app.post('/islogged', (req, res) => {
+app.post('/api/islogged', (req, res) => {
     if (req.session.user_id) {
         res.send(true);
 
@@ -169,11 +169,11 @@ app.post('/islogged', (req, res) => {
         res.send(false);
     }
 })
-app.post('/logout', (req, res) => {
+app.post('/api/logout', (req, res) => {
     req.session.user_id = null;
     req.session.destroy();
 })
-app.post('/login', parseJSON, async (req, res) => {
+app.post('/api/login', parseJSON, async (req, res) => {
     const { username, password } = req.body;
     if (username && password) {
         const curUser = await User.findOne({ username });
@@ -192,7 +192,7 @@ app.post('/login', parseJSON, async (req, res) => {
         res.send('fail')
     }
 })
-app.post('/filter', parseJSON, async (req, res) => {
+app.post('/api/filter', parseJSON, async (req, res) => {
     const { brand, flex, size, price } = req.body;
     const filter = {
         brand: [],
@@ -233,7 +233,7 @@ app.post('/filter', parseJSON, async (req, res) => {
     })
     res.send(filteredArray);
 })
-app.post('/clearCart', parseJSON, async (req, res) => {
+app.post('/api/clearCart', parseJSON, async (req, res) => {
     console.log(req.body.cart)
     const newPastOrder = {
         date: getDate(),
@@ -249,7 +249,7 @@ app.post('/clearCart', parseJSON, async (req, res) => {
     });
 
 })
-app.post('/getpastorders', async (req, res) => {
+app.post('/api/getpastorders', async (req, res) => {
     const curUser = await User.findOne({ _id: req.session.user_id });
     if (curUser.pastOrders) {
         res.send(curUser.pastOrders);
@@ -257,7 +257,7 @@ app.post('/getpastorders', async (req, res) => {
         res.send([]);
     }
 })
-app.post('/getinfo', async (req, res) => {
+app.post('/api/getinfo', async (req, res) => {
     const curUser = await User.findOne({ '_id': req.session.user_id });
 
     if (curUser.userInfo) {
@@ -289,7 +289,7 @@ app.post('/getinfo', async (req, res) => {
         })
     }
 })
-app.post('/saveinfo', parseJSON, async (req, res) => {
+app.post('/api/saveinfo', parseJSON, async (req, res) => {
     const { userInfo } = req.body;
     if (userInfo.B_info.cardNum) userInfo.B_info.cardNum = cryptr.encrypt(userInfo.B_info.cardNum);
     if (userInfo.B_info.exp) userInfo.B_info.exp = cryptr.encrypt(userInfo.B_info.exp);
@@ -309,7 +309,7 @@ const randomArray = (length) => {
     }
     return arr;
 }
-app.post('/getrandomimg', async (req, res) => {
+app.post('/api/getrandomimg', async (req, res) => {
     const arr = [];
     const products = await Product.find({});
     randArray = randomArray(products.length);
@@ -319,7 +319,7 @@ app.post('/getrandomimg', async (req, res) => {
     res.send(arr);
 })
 
-app.delete('/deleteitem', parseJSON, async (req, res) => {
+app.delete('/api/deleteitem', parseJSON, async (req, res) => {
     await User.findOneAndUpdate({ '_id': req.session.user_id, 'cart._id': req.body._id },
         {
             $pull: { cart: { _id: req.body._id } }
