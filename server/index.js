@@ -336,7 +336,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 const port = process.env.PORT || 3000;
 
-app.listen(port, err => {
+app.listen(process.env.PORT || 3000, err => {
     if (err) throw err;
     console.log('> Connected on 3000 :)');
 })
