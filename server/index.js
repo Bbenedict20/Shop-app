@@ -169,7 +169,6 @@ app.post('/api/islogged', (req, res) => {
         res.send(false);
     }
 })
-////
 app.post('/api/logout', (req, res) => {
     req.session.user_id = null;
     req.session.destroy();
