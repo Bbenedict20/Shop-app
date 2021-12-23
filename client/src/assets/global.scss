@@ -22,7 +22,10 @@ $p-color: #219ebc;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow-x: hidden;
+    overflow-y: scroll;
+    padding-bottom: 5rem;
     position: fixed;
     text-align: center;
     width: 100vw;
@@ -75,4 +78,8 @@ $p-color: #219ebc;
   
   .w-100 {
     width: 100%;
+  }
+  .vh-100 {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
   }

@@ -175,10 +175,12 @@ export default {
   },
   async mounted() {
     if (this.$store.state.isLoggedIn) {
-      this.axios.post("api/getinfo").then((res) => {
-        this.S_info = res.data.S_info;
-        this.B_info = res.data.B_info;
-      });
+      this.axios
+        .post(`${process.env.VUE_APP_API_ENDPOINT}/getinfo`)
+        .then((res) => {
+          this.S_info = res.data.S_info;
+          this.B_info = res.data.B_info;
+        });
     }
   },
   methods: {

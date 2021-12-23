@@ -56,11 +56,13 @@ export default {
     },
   },
   async mounted() {
-    await this.axios.post("api/getrandomimg").then((res) => {
-      this.itemOne = res.data[0];
-      this.itemTwo = res.data[1];
-      this.itemThree = res.data[2];
-    });
+    await this.axios
+      .post(`${process.env.VUE_APP_API_ENDPOINT}/getrandomimg`)
+      .then((res) => {
+        this.itemOne = res.data[0];
+        this.itemTwo = res.data[1];
+        this.itemThree = res.data[2];
+      });
   },
 };
 </script>
@@ -163,6 +165,7 @@ h2 {
     width: 80%;
     margin-bottom: 0.2rem;
   }
+
   .header {
     grid-template-areas:
       ". . . ."
@@ -171,6 +174,9 @@ h2 {
       ". item-2 item-2 .";
     h1 {
       font-size: 1.4em;
+    }
+    button {
+      font-size: 1em;
     }
   }
 }

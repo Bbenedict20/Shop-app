@@ -165,6 +165,12 @@ export default {
       for (let item of selectedItems) {
         item.classList.remove("selected");
       }
+      this.filter = {
+        brand: [],
+        size: [],
+        flex: [],
+        price: [],
+      };
     },
     handleClose() {
       this.toggleFilter();

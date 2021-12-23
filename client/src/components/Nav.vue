@@ -75,7 +75,9 @@ export default {
   async mounted() {
     window.addEventListener("resize", this.handleResize);
     //check to see if user is logged in then set global state to true or false
-    const res = await this.axios.post("api/islogged");
+    const res = await this.axios.post(
+      `${process.env.VUE_APP_API_ENDPOINT}/islogged`
+    );
     if (res.data) {
       this.$store.commit("logIn");
       this.$store.dispatch("getCart");
@@ -94,7 +96,7 @@ export default {
       //go back to using cookies as a cart
       this.$store.commit("getCookie");
       this.$router.push("/");
-      await this.axios.post("api/logout");
+      await this.axios.post(`${process.env.VUE_APP_API_ENDPOINT}/logout`);
     },
     handleResize() {
       if (window.innerWidth > 500) {
@@ -110,7 +112,7 @@ export default {
     async getCart() {
       //use for getting cart from backend
       await this.axios
-        .get("api/getcart")
+        .get(`${process.env.VUE_APP_API_ENDPOINT}/getcart`)
         .then((res) => this.$store.commit("setCart", res.data));
     },
   },

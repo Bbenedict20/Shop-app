@@ -50,7 +50,7 @@ export default {
 
       this.$refs.clear.handleClear();
       await this.axios
-        .post("api/filter", filters)
+        .post(`${process.env.VUE_APP_API_ENDPOINT}/filter`, filters)
         .then((res) => (this.products = res.data));
     },
     toggleFilter() {
@@ -74,12 +74,14 @@ export default {
     },
     async getFilter(e) {
       await this.axios
-        .post("api/filter", this.sortFilters(e))
+        .post(`${process.env.VUE_APP_API_ENDPOINT}/filter`, this.sortFilters(e))
         .then((res) => (this.products = res.data));
     },
   },
   async mounted() {
-    const res = await this.axios.get("api/products");
+    const res = await this.axios.get(
+      `${process.env.VUE_APP_API_ENDPOINT}/products`
+    );
     this.products = res.data;
   },
 };

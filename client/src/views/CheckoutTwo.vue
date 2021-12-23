@@ -3,16 +3,18 @@
     <h1>Order preview</h1>
     <div class="flex col ai-c cart-container">
       <div
-        class="flex ai-c"
+        class="flex ai-c jc-c w-100"
         v-for="item of this.$store.state.cart"
         :key="item._id"
       >
         <p>{{ item.name }}</p>
         <p>quantity: {{ item.quantity }}</p>
         <p>${{ item.price * item.quantity }}</p>
-        <button @click="handleInc(false, item._id, item.quantity)">-</button>
+        <button class="inc" @click="handleInc(false, item._id, item.quantity)">
+          -
+        </button>
         <button @click="handleDelete(item._id)">Delete</button>
-        <button @click="handleInc(true, item._id)">+</button>
+        <button class="inc" @click="handleInc(true, item._id)">+</button>
       </div>
     </div>
     <p><strong>Total:</strong> ${{ getTotal }}</p>
@@ -36,7 +38,7 @@ export default {
     async handleDelete(_id) {
       if (this.$store.state.isLoggedIn) {
         await this.axios
-          .delete("api/deleteitem", {
+          .delete(`${process.env.VUE_APP_API_ENDPOINT}/deleteitem`, {
             data: { _id },
           })
           .then((res) => this.$store.commit("setCart", res.data));
@@ -58,7 +60,10 @@ export default {
           this.handleDelete(_id);
         } else {
           await this.axios
-            .post("api/increment", { plus, _id })
+            .post(`${process.env.VUE_APP_API_ENDPOINT}/increment`, {
+              plus,
+              _id,
+            })
             .then((res) => this.$store.commit("setCart", res.data));
         }
       } else {
@@ -122,9 +127,10 @@ button {
   padding: 0.2rem;
   display: grid;
   place-items: center;
-  height: 10%;
+  height: 30%;
+  max-width: 25px;
 }
-@media (max-width: 360px) {
+@media (max-width: 540px) {
   .cart-container {
     width: 95%;
     padding: 1rem 0.5rem;
@@ -132,8 +138,13 @@ button {
   p {
     font-size: 0.8em;
   }
-  button:not(.checkout) {
+  .inc {
+    height: 50%;
+    padding: 0.1rem;
+  }
+  button:not(.checkout, .inc) {
     font-size: 0.6em;
+    height: 60%;
   }
   .total {
     font-size: 1.3em;
@@ -142,6 +153,12 @@ button {
 @media (min-width: 541px) {
   .cart-container {
     width: 80%;
+  }
+  .inc {
+    height: 50%;
+  }
+  button {
+    height: 60%;
   }
 }
 @media (min-width: 769px) {

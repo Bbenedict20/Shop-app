@@ -31,7 +31,7 @@ export default {
   },
   async mounted() {
     await this.axios
-      .post("api/getpastorders")
+      .post(`${process.env.VUE_APP_API_ENDPOINT}/getpastorders`)
       .then((res) => (this.pastOrders = res.data));
   },
   methods: {

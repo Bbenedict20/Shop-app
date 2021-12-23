@@ -123,10 +123,12 @@ export default {
     };
   },
   async mounted() {
-    await this.axios.post("api/getinfo").then((res) => {
-      this.S_info = res.data.S_info;
-      this.B_info = res.data.B_info;
-    });
+    await this.axios
+      .post(`${process.env.VUE_APP_API_ENDPOINT}/getinfo`)
+      .then((res) => {
+        this.S_info = res.data.S_info;
+        this.B_info = res.data.B_info;
+      });
   },
   computed: {
     getCheckStyle() {
@@ -152,7 +154,7 @@ export default {
     },
     async handleSave() {
       this.$router.push("/");
-      await this.axios.post("api/saveinfo", {
+      await this.axios.post(`${process.env.VUE_APP_API_ENDPOINT}/saveinfo`, {
         userInfo: { S_info: this.S_info, B_info: this.B_info },
       });
     },

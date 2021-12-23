@@ -53,7 +53,7 @@ export default {
     this.$store.commit("setCart", []);
     if (this.$store.state.isLoggedIn) {
       await this.axios
-        .post("api/clearCart", {
+        .post(`${process.env.VUE_APP_API_ENDPOINT}/clearCart`, {
           cart: this.curOrder,
         })
         .then(() => this.$store.commit("setCart", []));

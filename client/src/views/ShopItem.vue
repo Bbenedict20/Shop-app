@@ -19,7 +19,9 @@ export default {
   },
   async mounted() {
     await this.axios
-      .post("api/details", { id: this.$route.params.id })
+      .post(`${process.env.VUE_APP_API_ENDPOINT}/details`, {
+        id: this.$route.params.id,
+      })
       .then((res) => (this.info = res.data));
   },
   methods: {
@@ -27,7 +29,7 @@ export default {
       if (this.$store.state.isLoggedIn) {
         //add data to backend
         await this.axios
-          .post("api/additem", this.info)
+          .post(`${process.env.VUE_APP_API_ENDPOINT}/additem`, this.info)
           .then((res) => this.$store.commit("setCart", res.data));
       } else {
         let curCart = [];
