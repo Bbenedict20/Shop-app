@@ -12,9 +12,10 @@
       @emitFilter="getFilter"
       ref="clear"
     />
-    <div class="shop-grid">
+    <div v-if="products.length > 0" class="shop-grid">
       <ShopItemThumb v-for="item of products" :key="item._id" :item="item" />
     </div>
+    <h2 v-else>No matches :(</h2>
   </div>
 </template>
 <script>

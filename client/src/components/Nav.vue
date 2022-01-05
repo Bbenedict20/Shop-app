@@ -131,7 +131,7 @@ export default {
 nav {
   justify-self: center;
   max-width: 1400px;
-  position: absolute;
+  position: fixed;
   padding: 1rem 0.8rem;
   width: 100%;
 
